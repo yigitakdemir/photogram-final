@@ -56,4 +56,12 @@ class UsersController < ApplicationController
     end
   end
 
+  def unfollow
+    @f_req_id = params.fetch("f_req_id")
+    matching_f_req = FollowRequest.where(id: @f_req_id.to_i).first
+    recp_id = matching_f_req.recipient_id
+    recp_name = User.where(id: recp_id).first.username
+    matching_f_req.destroy
+    redirect_to("/users/" + recp_name)
+  end
 end
