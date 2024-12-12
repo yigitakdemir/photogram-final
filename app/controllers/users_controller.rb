@@ -45,14 +45,14 @@ class UsersController < ApplicationController
     recp_priv = recp_user.private
     recp_name = recp_user.username
 
-    if recp_priv:
+    if recp_priv
       f_req.status = "pending"
       f_req.save
       redirect_to("/users/")
     else
       f_req.status = "accepted"
       f_req.save
-      redirect_to("/users/" recp_name)
+      redirect_to("/users/" + recp_name)
     end
   end
 
