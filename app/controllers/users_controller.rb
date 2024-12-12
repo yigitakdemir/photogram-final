@@ -11,6 +11,9 @@ class UsersController < ApplicationController
 
     if @the_user == nil
       redirect_to("/404")
+    matching_leader = current_user.leaders.where(id: @the_user.id)
+    elsif @the_user.private && matching_leader.count == 0
+      
     else
       render(template: "users_html/show")
     end
