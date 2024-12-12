@@ -60,6 +60,7 @@ class User < ApplicationRecord
   # User#commented_photos: returns rows from the photos table associated to this user through its comments
   has_many(:commented_photos, through: :comments, source: :photo)
 
+  
   ### Indirect associations built on scoped associations
 
   # User#followers: returns rows from the users table associated to this user through its accepted_received_follow_requests (the follow requests' senders)
