@@ -9,13 +9,15 @@
     <textarea id="browser_caption" name="input_caption" placeholder="Enter a caption for the photo..."></textarea>
 
     <label for="browser_user_id">Owner ID</label>
-    <input id="browser_user_id" type="hidden" name="input_owner_id">
+    <input id="browser_user_id" type="hidden" name="input_owner_id" value="<% current_user.id %>">
 
     <button>Add photo</button>
   </form>
-<% end %>
 
 <hr>
+<% end %>
+
+
 
 <table border="1">
   <tr>
