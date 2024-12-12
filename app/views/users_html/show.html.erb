@@ -14,7 +14,7 @@
   <dd>
     <%= @the_user.followers.count %>
 
-    <% if @the_user.id == current_user.id %>
+    <% if @the_user.id == current_user.id && current_user.private %>
 
       <div>
 
@@ -47,7 +47,7 @@
         </ul>
       </div>
 
-    <% else %>
+    <% elsif @the_user.id != current_user.id %>
       <div>
         <% matching_f_req = FollowRequest.where({:sender_id => current_user.id, :recipient_id => @the_user.id}) %>
         <% if matching_f_req.count == 0 %>
