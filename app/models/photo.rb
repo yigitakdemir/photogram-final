@@ -12,6 +12,7 @@
 #  owner_id       :integer
 #
 class Photo < ApplicationRecord
+  mount_uploader :image, ImageUploader
   validates(:poster, { :presence => true })
 
   # Association accessor methods to define:
