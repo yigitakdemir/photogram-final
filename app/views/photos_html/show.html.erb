@@ -28,32 +28,67 @@
     Posted
   </dt>
   <dd>
-    <%= @the_photo.created_at %>
+    <%= time_ago_in_words(@the_photo.created_at) %> ago
   </dd>
 
   <dt>
-    Edit photo
+    Likes count
   </dt>
   <dd>
-    <form action="/update_photo/<%= @the_photo.id %>" method="post">
-      <label for="browser_image">Image</label>
-      <input id="browser_image" type="text" name="input_image" placeholder="Enter a URL for the image..." value=<%= @the_photo.image %>>
-
-      <label for="browser_caption">Caption</label>
-      <textarea id="browser_caption" name="input_caption" placeholder="Enter a caption for the photo..."><%= @the_photo.caption %></textarea>
-
-      <button>Update photo</button>
-    </form>
+    <%= @the_photo.likes_count %>
   </dd>
 
   <dt>
-    Delete photo
+    Comments count
   </dt>
   <dd>
-    <a href="/delete_photo/<%= @the_photo.id %>">
-      Delete this photo
-    </a>
+    <%= @the_photo.comments_count %>
   </dd>
+
+  <dt>
+    Fans
+  </dt>
+  <dd>
+    <% fan_names = [] %>
+    <% @the_photo.fans.each do |fan| %>
+      <% fan_names = fan_names + [fan.username] %>
+    <% end %>
+    <%= fan_names.to_sentence %>
+  </dd>
+
+  <dt>
+    Add a fan
+  </dt>
+  <dd>
+    <%= time_ago_in_words(@the_photo.created_at) %> ago
+  </dd>
+
+  <% if @the_photo.owner_id == current_user.id %>
+    <dt>
+      Edit photo
+    </dt>
+    <dd>
+      <form action="/update_photo/<%= @the_photo.id %>" method="post">
+        <label for="browser_image">Image</label>
+        <input id="browser_image" type="text" name="input_image" placeholder="Enter a URL for the image..." value=<%= @the_photo.image %>>
+
+        <label for="browser_caption">Caption</label>
+        <textarea id="browser_caption" name="input_caption" placeholder="Enter a caption for the photo..."><%= @the_photo.caption %></textarea>
+
+        <button>Update photo</button>
+      </form>
+    </dd>
+
+    <dt>
+      Delete photo
+    </dt>
+    <dd>
+      <a href="/delete_photo/<%= @the_photo.id %>">
+        Delete this photo
+      </a>
+    </dd>
+  <% end %>
+
 </dl>
 
 <h2>Comments</h2>
@@ -85,7 +120,7 @@
       </td>
 
       <td>
-        <%= a_comment.created_at %>
+        <%= time_ago_in_words(a_comment.created_at) %> ago
       </td>
     </tr>
   <% end %>
@@ -94,11 +129,9 @@
 <h3>Add a new comment</h3>
 
 <form action="/add_comment" method="post">
-  <label for="browser_photo_id">Photo ID</label>
-  <input id="browser_photo_id" type=text placeholder="Enter the photo ID" name="input_photo_id" value=<%= @the_photo.id %>>
+  <input type="hidden" name="input_photo_id" value="<%= @the_photo.id %>">
 
-  <label for="browser_author_id">Author ID</label>
-  <input id="browser_author_id" type=text placeholder="Enter your author ID" name="input_author_id">
+  <input type="hidden" name="input_author_id" value="<%= current_user.id %>">
 
   <label for="browser_comment">Comment</label>
   <textarea id="browser_comment" type=text placeholder="Enter a comment..." name="input_comment"></textarea>

@@ -81,4 +81,13 @@ class UsersController < ApplicationController
     matching_f_req.save
     redirect_to("/users/" + current_user.username)
   end
+
+  def feed
+    @f_req_id = params.fetch("f_req_id")
+    @q_status = params.fetch("query_status")
+    matching_f_req = FollowRequest.where(id: @f_req_id.to_i).first
+    matching_f_req.status = @q_status
+    matching_f_req.save
+    redirect_to("/users/" + current_user.username)
+  end
 end

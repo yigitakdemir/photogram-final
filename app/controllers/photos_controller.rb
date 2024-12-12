@@ -57,6 +57,11 @@ class PhotosController < ApplicationController
     new_comment.author_id = input_author_id
     new_comment.photo_id = input_photo_id
     new_comment.save
+
+    matching_photo = Photo.where(id: input_photo_id).first
+    matching_photo.comments_count += 1
+    matching_photo.save
+
     redirect_to("/photos/" + input_photo_id)
   end
 end
