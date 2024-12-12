@@ -32,6 +32,8 @@ class PhotosController < ApplicationController
     new_photo.image = image
     new_photo.caption = caption
     new_photo.owner_id = owner_id
+    new_photo.likes_count = 0
+    new_photo.comments_count = 0
     new_photo.save
     # render(template: "photos_html/delete")
     redirect_to("/photos/", { :notice => "Photo created successfully." })
@@ -50,18 +52,41 @@ class PhotosController < ApplicationController
 
   def comment
     input_photo_id = params.fetch("input_photo_id")
-    input_author_id = params.fetch("input_author_id")
     input_comment = params.fetch("input_comment")
     new_comment = Comment.new
     new_comment.body = input_comment
-    new_comment.author_id = input_author_id
+    new_comment.author_id = current_user.id
     new_comment.photo_id = input_photo_id
     new_comment.save
 
     matching_photo = Photo.where(id: input_photo_id).first
-    matching_photo.comments_count += 1
+    matching_photo.comments_count = matching_photo.comments_count + 1
     matching_photo.save
 
     redirect_to("/photos/" + input_photo_id)
   end
+
+  def like
+    input_photo_id = params.fetch("input_photo_id")
+    new_like = Like.new
+    new_like.photo_id = input_photo_id
+    new_like.fan_id = current_user.id
+    new_like.save
+
+    matching_photo = Photo.where(id: input_photo_id).first
+    matching_photo.likes_count += 1
+    matching_photo.save
+
+    redirect_to("/photos/" + input_photo_id, { :notice => "Like created successfully." })
+  end
+
+  def unlike
+    like_id = params.fetch("like_id")
+    matching_like = Like.where(id: like_id.to_i).first
+    photo_id = matching_like.photo_id
+    matching_like.destroy
+
+    redirect_to("/photos/" + photo_id.to_s, { :alert => "Like deleted successfully." })
+  end
+
 end

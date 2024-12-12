@@ -35,14 +35,14 @@
     Likes count
   </dt>
   <dd>
-    <%= @the_photo.likes_count %>
+    <%= Like.where(photo_id: @the_photo.id ).count %>
   </dd>
 
   <dt>
     Comments count
   </dt>
   <dd>
-    <%= @the_photo.comments_count %>
+    <%= Comment.where(photo_id: @the_photo.id ).count %>
   </dd>
 
   <dt>
@@ -60,7 +60,18 @@
     Add a fan
   </dt>
   <dd>
-    <%= time_ago_in_words(@the_photo.created_at) %> ago
+    <% matching_like = @the_photo.likes.where(fan_id: current_user.id) %>
+    <% if matching_like.count == 0 %>
+      <form action="/insert_like" method="post">
+        <input type="hidden" value="<%= @the_photo.id %>" name="input_photo_id">
+        <button>Like</button>
+      </form>
+    <% else %>
+      <a href="/delete_like/<%= matching_like.first.id %>">
+        Unlike
+      </a>
+    <% end %>
+
   </dd>
 
   <% if @the_photo.owner_id == current_user.id %>
@@ -128,13 +139,11 @@
 
 <h3>Add a new comment</h3>
 
-<form action="/add_comment" method="post">
+<form action="/insert_comment" method="post">
   <input type="hidden" name="input_photo_id" value="<%= @the_photo.id %>">
 
-  <input type="hidden" name="input_author_id" value="<%= current_user.id %>">
-
   <label for="browser_comment">Comment</label>
-  <textarea id="browser_comment" type=text placeholder="Enter a comment..." name="input_comment"></textarea>
+  <textarea id="browser_comment" placeholder="Enter a comment..." name="input_comment"></textarea>
 
   <button>Add comment</button>
 </form>

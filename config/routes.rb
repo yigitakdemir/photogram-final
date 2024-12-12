@@ -14,12 +14,16 @@ Rails.application.routes.draw do
   get("/delete_photo/:photo_id", controller: "photos", action: "delete")
   post("/insert_photo_record", controller: "photos", action: "create")
   post("/update_photo/:photo_id", controller: "photos", action: "update")
-  post("/add_comment", controller: "photos", action: "comment")
+  post("/insert_comment", controller: "photos", action: "comment")
   
+  post("/insert_like", controller: "photos", action: "like")
+  get("/delete_like/:like_id", controller: "photos", action: "unlike")
+
   post("/insert_follow_request", controller: "users", action: "follow")
   get("/delete_follow_request/:f_req_id", controller: "users", action: "unfollow")
   post("/modify_follow_request/:f_req_id", controller: "users", action: "modify")
 
-  get("/users/:username/feed", controller: "users", action: "show")
+
+  get("/users/:username/feed", controller: "users", action: "feed")
 
 end
