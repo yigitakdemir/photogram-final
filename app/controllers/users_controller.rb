@@ -32,4 +32,28 @@ class UsersController < ApplicationController
     the_user.save
     redirect_to("/users/" + my_input_username)
   end
+
+  def follow
+    recp_id = params.fetch("recipient_id")
+    my_id = current_user.id
+
+    f_req = FollowRequest.new
+    f_req.recipient_id = recp_id
+    f_req.sender_id = my_id
+    
+    recp_user = User.where(id: recp_id).at(0)
+    recp_priv = recp_user.private
+    recp_name = recp_user.username
+
+    if recp_priv:
+      f_req.status = "pending"
+      f_req.save
+      redirect_to("/users/")
+    else
+      f_req.status = "accepted"
+      f_req.save
+      redirect_to("/users/" recp_name)
+    end
+  end
+
 end
