@@ -20,7 +20,21 @@
           All public photos
         </a>
       </li>
+      
+      <% if current_user != nil %>
+        <li>
+          <a href="/users/edit">
+            <%= current_user.username %>
+          </a>
+        </li>
 
+        <li>
+          <a href="/users/sign_out">
+            Sign out
+          </a>
+        </li>
+      
+      <% else %>
         <li>
           <a href="/users/sign_in">
             Sign in
@@ -31,7 +45,9 @@
           <a href="/users/sign_up">
             Sign up
           </a>
-        </li>
+        </li>  
+      <% end %>
+
     </ul>
 
     <% if notice.present? %>
