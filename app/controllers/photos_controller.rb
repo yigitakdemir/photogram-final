@@ -1,7 +1,12 @@
 class PhotosController < ApplicationController
   skip_before_action(:authenticate_user!, { :only => [:index] })
   def index
-    @list_of_photos = Photo.all.order(created_at: :desc)
+    private_users = User.where(private: false)
+    id_of_private_users = []
+    private_users.each do |user|
+      id_of_private_users = id_of_private_users + [user.id]
+    end
+    @list_of_photos = Photo.all.where(owner_id: id_of_private_users).order(created_at: :desc)
     render(template: "photos_html/index")
   end
 
