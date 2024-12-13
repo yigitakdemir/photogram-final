@@ -23,7 +23,8 @@ Rails.application.routes.draw do
   get("/delete_follow_request/:f_req_id", controller: "users", action: "unfollow")
   post("/modify_follow_request/:f_req_id", controller: "users", action: "modify")
 
-
+  get("/users/:username/liked_photos", controller: "users", action: "liked_photos")  
   get("/users/:username/feed", controller: "users", action: "feed")
+  get("/users/:username/discover", controller: "users", action: "discover")
 
 end

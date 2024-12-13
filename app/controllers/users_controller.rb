@@ -82,12 +82,21 @@ class UsersController < ApplicationController
     redirect_to("/users/" + current_user.username)
   end
 
+  def liked_photos
+    @username = params.fetch("username")
+    @the_user = User.where(username: @username).first
+    render(template: "users_html/liked_photos")
+  end
+
   def feed
-    @f_req_id = params.fetch("f_req_id")
-    @q_status = params.fetch("query_status")
-    matching_f_req = FollowRequest.where(id: @f_req_id.to_i).first
-    matching_f_req.status = @q_status
-    matching_f_req.save
-    redirect_to("/users/" + current_user.username)
+    @username = params.fetch("username")
+    @the_user = User.where(username: @username).first
+    render(template: "users_html/feed")
+  end
+
+  def discover
+    @username = params.fetch("username")
+    @the_user = User.where(username: @username).first
+    render(template: "users_html/discover")
   end
 end
